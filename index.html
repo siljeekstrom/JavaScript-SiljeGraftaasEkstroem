@@ -11,6 +11,8 @@
     <link href="css/styles.css" rel="stylesheet" type="text/css" />
   </head>
 
+  <script type="module" src="js/home.js"></script>
+
   <body>
     <header>
       <div class="header-inner header-inner--mobile">
@@ -66,47 +68,16 @@
         </div>
       </section>
 
-      <section class="new-arrivals" aria-labelledby="new-arrivals-title">
-        <h2 id="new-arrivals-title">New arrivals</h2>
+      <section class="new-arrivals" aria-labelledby="products-title">
+        <h2 id="products-title">Our Jackets</h2>
 
-        <div class="product-grid">
-          <a href="productdetail.html" class="product-tile">
-            <article class="product-card">
-              <img
-                src="pictures/avalanche-pro.png"
-                alt="Avalanche Pro Jacket"
-              />
-              <div class="product-info">
-                <h3>Avalanche Pro</h3>
-                <p class="price">2795 kr</p>
-              </div>
-            </article>
-          </a>
+        <p id="products-loading" role="status" hidden>Loading products...</p>
 
-          <a href="productdetail.html" class="product-tile">
-            <article class="product-card">
-              <img src="pictures/zephyr-shell.png" alt="Zephyr Shell Jacket" />
-              <div class="product-info">
-                <h3>Zephyr Shell</h3>
-                <p class="price">2295 kr</p>
-              </div>
-            </article>
-          </a>
+        <p id="products-error" role="alert" hidden>
+          Error loading products. Please try again later.
+        </p>
 
-          <a href="productdetail.html" class="product-tile">
-            <article class="product-card">
-              <img
-                src="pictures/velocity-windbreaker.png"
-                alt="Velocity Windbreaker Jacket"
-              />
-              <div class="product-info">
-                <h3>Velocity Windbreaker</h3>
-                <p class="price">2495 kr</p>
-              </div>
-            </article>
-          </a>
-        </div>
-        <a href="products.html" class="cta-button">Explore all jackets</a>
+        <div id="product-list" class="products-grid"></div>
       </section>
 
       <section class="categories" aria-labelledby="categories-title">
