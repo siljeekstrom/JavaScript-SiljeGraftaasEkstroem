@@ -2287,3 +2287,35 @@ footer p {
         grid-template-columns: 1fr;
     }
 }
+
+.product-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.product-filter label {
+    font-weight: 600;
+}
+
+.product-filter select {
+    max-width: 100%;
+    min-height: 44px;
+    padding: 10px 36px 10px 14px;
+    border: 1px solid var(--color-text);
+    border-radius: 8px;
+    background-color: var(--color-white);
+    color: var(--color-text);
+    font: inherit;
+}
+
+.product-filter select:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+#products-count {
+    margin: 0 0 24px;
+}

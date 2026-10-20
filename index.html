@@ -71,6 +71,18 @@
       <section class="new-arrivals" aria-labelledby="products-title">
         <h2 id="products-title">Our Jackets</h2>
 
+        <div class="product-filter">
+          <label for="gender-filter">Filter by gender</label>
+
+          <select id="gender-filter" disabled>
+            <option value="all">All jackets</option>
+            <option value="Female">Women</option>
+            <option value="Male">Men</option>
+          </select>
+        </div>
+
+        <p id="products-count" role="status"></p>
+
         <p id="products-loading" role="status" hidden>Loading products...</p>
 
         <p id="products-error" role="alert" hidden>

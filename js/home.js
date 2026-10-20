@@ -8,6 +8,10 @@ const priceFormatter = new Intl.NumberFormat("nb-NO", {
 const productList = document.querySelector("#product-list");
 const loadingMessage = document.querySelector("#products-loading");
 const errorMessage = document.querySelector("#products-error");
+const genderFilter = document.querySelector("#gender-filter");
+const productsCount = document.querySelector("#products-count");
+
+let allProducts = [];
 
 function createProductCard(product) {
     const link = document.createElement("a");
@@ -51,29 +55,56 @@ function createProductCard(product) {
     return link;
 }
 
+function renderProducts(products) {
+    productList.replaceChildren();
+
+    productsCount.textContent = `${products.length} ${products.length === 1 ? "jacket" : "jackets"} found`;
+
+    if (products.length === 0) {
+        productList.textContent = "No jackets match your selected criteria.";
+        return;
+    }
+
+    products.forEach((product) => {
+        const card = createProductCard(product);
+        productList.append(card);
+    });
+}
+
+genderFilter.addEventListener("change", () => {
+    const selectedGender = genderFilter.value;
+
+    if (selectedGender === "all") {
+        renderProducts(allProducts);
+        return;
+    }
+
+    const filteredProducts = allProducts.filter((product) => {
+        return product.gender === selectedGender;
+    });
+
+    renderProducts(filteredProducts);
+});
+
 async function loadProducts() {
     loadingMessage.hidden = false;
     errorMessage.hidden = true;
+    genderFilter.disabled = true;
+    productsCount.textContent = "";
     productList.replaceChildren();
     productList.setAttribute("aria-busy", "true");
 
     try {
-        const products = await getProducts();
+        allProducts = await getProducts();
 
-        if (products.length === 0) {
-            productList.textContent = "No products available.";
-            return;
-        }
+        renderProducts(allProducts);
 
-        products.forEach((product) => {
-            const card = createProductCard(product);
-            productList.append(card);
-        });
+        genderFilter.disabled = false;
     } catch (error) {
-        console.error(error);
-
         productList.replaceChildren();
-        errorMessage.textContent = "We could not load the products. Please try again later.";
+        productsCount.textContent = "";
+
+        errorMessage.textContent = "Failed to load jackets. Please try again later.";
         errorMessage.hidden = false;
     } finally {
         loadingMessage.hidden = true;
