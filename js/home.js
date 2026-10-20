@@ -30,7 +30,7 @@ function createProductCard(product) {
     info.classList.add("product-info");
 
     const title = document.createElement("h3");
-    title.textContent = product.title;
+    title.textContent = product.title.replace(/^Rainy Days\s+/i, "");
 
     const price = document.createElement("p");
     price.classList.add("price");
