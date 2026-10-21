@@ -2346,3 +2346,28 @@ footer p {
 product-content[hidden] {
     display: none;
 }
+
+button.add-to-cart {
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+button.add-to-cart:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button.add-to-cart:focus-visible {
+    outline: 3px solid var(--color-text);
+    outline-offset: 4px;
+}
+
+#cart-message,
+#cart-error {
+    margin-top: 16px;
+}
+
+#cart-error {
+    color: #973300;
+}

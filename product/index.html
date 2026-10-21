@@ -62,7 +62,7 @@
       <nav class="breadcrumb" aria-label="breadcrumb">
         <a href="../index.html">Home</a>
         <span class="breadcrumb-separator" aria-hidden="true"></span>
-        <a href="products.html">Shop</a>
+        <a href="../products.html">Shop</a>
         <span class="breadcrumb-separator" aria-hidden="true"></span>
         <span id="product-breadcrumb" class="breadcrumb-current">Product</span>
       </nav>
@@ -94,6 +94,12 @@
             </div>
 
             <p id="product-description" class="product-description"></p>
+            <button id="add-to-cart" class="cta-button" type="button" disabled>
+              Add to Cart
+            </button>
+
+            <p id="cart-message" role="status"></p>
+            <p id="cart-error" role="alert" hidden></p>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { getProduct } from "./api.js";
+import { addToCart } from "./cart.js";
 
 const priceFormatter = new Intl.NumberFormat("nb-NO", {
     style: "currency",
@@ -14,6 +15,11 @@ const productImage = document.querySelector("#product-image");
 const productPrice = document.querySelector("#product-price");
 const productDescription = document.querySelector("#product-description");
 const productBreadcrumb = document.querySelector("#product-breadcrumb");
+const addToCartButton = document.querySelector("#add-to-cart");
+const cartMessage = document.querySelector("#cart-message");
+const cartError = document.querySelector("#cart-error");
+
+let currentProduct = null;
 
 function renderProduct(product) {
     const displayTitle = product.title.replace(/^Rainy Days\s+/i, "");
@@ -60,7 +66,11 @@ async function loadProduct() {
         const product = await getProduct(productId);
 
         renderProduct(product);
+
+        currentProduct = product;
+        addToCartButton.disabled = false;
         productContent.hidden = false;
+
     } catch (error) {
         errorMessage.textContent = 
         error instanceof Error 
@@ -72,5 +82,26 @@ async function loadProduct() {
         loadingMessage.hidden = true;
     }
 }
+
+addToCartButton.addEventListener("click", () => {
+    cartMessage.textContent = "";
+    cartError.hidden = true;
+
+    try {
+        if (!currentProduct) {
+            throw new Error("Please wait until the jacket has loaded");
+        }
+
+        addToCart(currentProduct.id);
+
+        const displayTitle = currentProduct.title.replace(/^Rainy Days\s+/i, "");
+
+        cartMessage.textContent = `${displayTitle} added to your cart.`;
+    } catch (error) {
+        cartError.textContent = "We could not add this jacket to your cart. Please check that browser storage is available and try again.";
+
+        cartError.hidden = false;
+    }
+});
 
 loadProduct();
