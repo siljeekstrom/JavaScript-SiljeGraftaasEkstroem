@@ -2371,3 +2371,40 @@ button.add-to-cart:focus-visible {
 #cart-error {
     color: #973300;
 }
+
+#cart-items .cart-item {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--color-text);
+}
+
+#cart-items .cart-item-details {
+    min-width: 0;
+}
+
+#cart-items .cart-item-image img {
+    mix-blend-mode: multiply;
+}
+
+.remove-from-cart {
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid var(--color-text);
+    border-radius: 8px;
+    background-color: var(--color-white);
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+}
+
+.remove-from-cart:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+#cart-page-error {
+    color: #973300;
+}
+
+#cart-summary[hidden] {
+    display: none;
+}

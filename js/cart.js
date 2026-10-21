@@ -59,7 +59,18 @@ export function addToCart(productId) {
             id: productId, 
             quantity: 1,
         });
-    }
-
+    } 
+    
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+    export function removeFromCart(productId) {
+        const cart = getCart();
+
+        const updatedCart = cart.filter((item) => {
+            return item.id !== productId;
+        }); 
+
+       localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
+
 }
