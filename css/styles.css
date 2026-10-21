@@ -2319,3 +2319,30 @@ footer p {
 #products-count {
     margin: 0 0 24px;
 }
+
+#product-error {
+    width: min(var(--container), calc(100% - var(--page-gutter)));
+    margin: 24px auto;
+}
+
+#product-image {
+    mix-blend-mode: multiply;
+}
+
+#product-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#product-price del {
+    font-weight: 400;
+}
+
+#product-price .sale-price {
+    color: #973300;
+}
+
+product-content[hidden] {
+    display: none;
+}

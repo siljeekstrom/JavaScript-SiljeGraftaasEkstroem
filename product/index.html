@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore jacket details, features and prices at Rainy Days. Find the perfect jacket for rainy weather."
+    />
+    <title>Rainy Days | Product</title>
+    <link href="../css/styles.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="header-inner header-inner--mobile">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="sr-only">Open menu</span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+
+        <a href="../index.html" class="logo">
+          <img src="../pictures/RainyDays_Logo.png" alt="Rainy Days Logo" />
+        </a>
+
+        <nav class="main-nav" aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li><a href="../products.html">Shop</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-buttons">
+          <button type="button" class="button-icon button-search">
+            <span class="button-label">Search</span>
+            <img
+              src="../icons/search-icon.png"
+              alt=""
+              aria-hidden="true"
+              class="button-icon-image"
+            />
+          </button>
+
+          <a href="../cart.html" class="button-icon button-cart">
+            <span class="button-label">Cart</span>
+            <img
+              src="../icons/cart-icon.png"
+              alt=""
+              aria-hidden="true"
+              class="button-icon-image"
+            />
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="product-detail-page">
+      <nav class="breadcrumb" aria-label="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb-separator" aria-hidden="true"></span>
+        <a href="products.html">Shop</a>
+        <span class="breadcrumb-separator" aria-hidden="true"></span>
+        <span id="product-breadcrumb" class="breadcrumb-current">Product</span>
+      </nav>
+
+      <p id="product-loading" role="status" hidden>Loading product...</p>
+
+      <p id="product-error" role="alert" hidden>
+        Failed to load product. Please try again later.
+      </p>
+
+      <section
+        id="product-content"
+        class="product-detail"
+        aria-labelledby="product-title"
+        hidden
+      >
+        <div class="product-detail-grid">
+          <div class="product-gallery">
+            <div class="product-main-image">
+              <img id="product-image" class="product-main-img" alt="" />
+            </div>
+          </div>
+
+          <div class="product-details">
+            <h1 id="product-title"></h1>
+
+            <div class="product-meta">
+              <p id="product-price" class="product-price"></p>
+            </div>
+
+            <p id="product-description" class="product-description"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">Stay dry. Stay inspired.</h2>
+        <p>
+          Join our newsletter for outdoor stories, new arrivals and exclusive
+          offers.
+        </p>
+        <form class="newsletter-form">
+          <label class="sr-only" for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+          />
+          <button type="submit" class="cta-button">Subscribe</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <a href="../index.html" class="footer-logo-link">
+        <img
+          src="../pictures/RainyDays_Logo.png"
+          alt="Rainy Days Logo"
+          class="footer-logo"
+      /></a>
+      <div class="footer-content">
+        <div>
+          <h3>About Us</h3>
+          <ul class="footer-links">
+            <li>Our story</li>
+            <li>Sustainability</li>
+            <li>Careers</li>
+            <li>Store locator</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Help &amp; Support</h3>
+          <ul class="footer-links">
+            <li>Shipping &amp; delivery</li>
+            <li>Returns &amp; Refunds</li>
+            <li>Size guide</li>
+            <li>FAQ</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <ul class="footer-links">
+            <li>
+              <a href="mailto:hello@rainydays.com">hello@rainydays.com</a>
+            </li>
+            <li><a href="tel:+4740000000">+47 400 00 000</a></li>
+            <li>Rainy Days HQ, Oslo, Norway</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Follow us</h3>
+          <ul class="footer-links">
+            <li>
+              <img
+                src="../icons/instagram-icon.png"
+                alt=""
+                aria-hidden="true"
+                class="social-icon"
+              />Instagram
+            </li>
+            <li>
+              <img
+                src="../icons/facebook-icon.png"
+                alt=""
+                aria-hidden="true"
+                class="social-icon"
+              />Facebook
+            </li>
+            <li>
+              <img
+                src="../icons/tiktok-icon.png"
+                alt=""
+                aria-hidden="true"
+                class="social-icon"
+              />TikTok
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <hr />
+        <div class="footer-bottom-row">
+          <p>&copy; 2026 Rainy Days. All rights reserved.</p>
+          <p>Privacy Policy | Terms of Service</p>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="../js/product.js"></script>
+  </body>
+</html>
