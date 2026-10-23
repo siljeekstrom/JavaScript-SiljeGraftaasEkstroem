@@ -2445,3 +2445,42 @@ button.add-to-cart:focus-visible {
 #home-cart-error {
     color: #973300;
 }
+
+#checkout-form {
+    margin: 32px 0;
+}
+
+#checkout-fields {
+    display: grid;
+    gap: 12px;
+    max-width: 550px;
+    margin: 16px 0;
+    padding: 24px;
+    border: 1px solid var(--color-text);
+    border-radius: 8px;
+}
+
+#checkout-fields input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px;
+    border: 1px solid var(--color-text);
+    border-radius: 6px;
+    font: inherit;
+}
+
+#checkout-fields button {
+    min-height: 44px;
+    margin-top: 12px;
+    font: inherit;
+    cursor: pointer;
+}
+
+#checkout-fields:disabled {
+    opacity: 0.6;
+}
+
+#checkout-form[hidden],
+#order-details[hidden] {
+    display: none;
+}

@@ -72,5 +72,8 @@ export function addToCart(productId) {
         }); 
 
        localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
+}
 
+export function clearCart() {
+    localStorage.removeItem(CART_KEY);
 }

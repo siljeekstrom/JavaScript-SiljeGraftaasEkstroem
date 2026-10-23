@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="View your Rainy Days order confirmation."
+    />
+    <title>Order confirmation | Rainy Days</title>
+    <link href="../../css/styles.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+      <div class="header-inner">
+        <a href="../../index.html" class="logo">
+          <img src="../../pictures/RainyDays_Logo.png" alt="Rainy Days home" />
+        </a>
+      </div>
+    </header>
+
+    <main class="confirmation">
+      <section class="confirmation-card">
+        <h1 id="confirmation-title">Order confirmation</h1>
+
+        <p id="confirmation-message" role="status"></p>
+
+        <div id="order-details" hidden>
+          <p>Order reference: <span id="order-reference"></span></p>
+          <p>Jackets: <span id="order-count"></span></p>
+          <p>Total: <span id="order-total"></span></p>
+          <p>This was a demo purchase. No payment was taken.</p>
+        </div>
+
+        <a href="../../index.html" class="cta-button">Continue shopping</a>
+      </section>
+    </main>
+
+    <script type="module" src="../../js/confirmation.js"></script>
+  </body>
+</html>

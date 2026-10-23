@@ -43,6 +43,49 @@
           </div>
         </div>
 
+        <form id="checkout-form" hidden>
+          <h2>Shipping information</h2>
+
+          <p>This is a demo checkout. No payment will be taken.</p>
+
+          <fieldset id="checkout-fields">
+            <legend>Your details</legend>
+
+            <label for="full-name">Full name</label>
+            <input
+              id="full-name"
+              name="full-name"
+              type="text"
+              autocomplete="name"
+              required
+            />
+
+            <label for="checkout-email">Email</label>
+            <input
+              id="checkout-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+
+            <label for="shipping-address">Address</label>
+            <input
+              id="shipping-address"
+              name="address"
+              type="text"
+              autocomplete="street-address"
+              required
+            />
+
+            <button type="submit" class="cta-button">
+              Complete demo purchase
+            </button>
+          </fieldset>
+        </form>
+
+        <p id="order-loading" role="status" hidden>Processing your order...</p>
+
         <a href="../index.html" class="cta-button"> Continue shopping </a>
       </section>
     </main>

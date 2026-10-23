@@ -1,5 +1,5 @@
 import { getProducts } from "./api.js";
-import { getCart, removeFromCart } from "./cart.js";
+import { getCart, removeFromCart, clearCart } from "./cart.js";
 
 const priceFormatter = new Intl.NumberFormat("nb-NO", {
     style: "currency",
@@ -13,6 +13,11 @@ const emptyMessage = document.querySelector("#cart-empty");
 const cartItems = document.querySelector("#cart-items");
 const cartSummary = document.querySelector("#cart-summary");
 const cartTotal = document.querySelector("#cart-total");
+const checkoutForm = document.querySelector("#checkout-form");
+const checkoutFields = document.querySelector("#checkout-fields");
+const orderLoading = document.querySelector("#order-loading");
+
+let isProcessingOrder = false;
 
 let products = [];
 
@@ -55,7 +60,7 @@ function createCartItem(item, product) {
     }
 
     const quantity = document.createElement("p");
-    quantity.textContent = `Quantity: ${item.quantity}"`;
+    quantity.textContent = `Quantity: ${item.quantity}`;
 
     const price = document.createElement("p");
     price.classList.add("cart-item-price");
@@ -125,6 +130,8 @@ function createCartItem(item, product) {
         cartTotal.textContent = hasUnavailableItems
         ? "Remove unavailable items to see your total."
         : priceFormatter.format(totalInOre / 100);
+        checkoutForm.hidden =
+            cart.length === 0 || hasUnavailableItems;
     }
 
     async function loadCart() {
@@ -132,6 +139,7 @@ function createCartItem(item, product) {
         errorMessage.hidden = true;
         emptyMessage.hidden = true;
         cartSummary.hidden = true;
+        checkoutForm.hidden = true;
 
         try {
             const cart = getCart();
@@ -152,4 +160,90 @@ function createCartItem(item, product) {
             loadingMessage.hidden = true;
         }
         }
+
+    checkoutForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (isProcessingOrder) {
+            return;
+        }
+
+        isProcessingOrder = true;
+        checkoutFields.disabled = true;
+        orderLoading.hidden = false;
+        errorMessage.hidden = true;
+
+        cartItems.querySelectorAll("button").forEach((button) => {
+            button.disabled = true;
+        });
+
+        let receiptSaved = false;
+
+        try {
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                throw new Error("Your cart is empty. Please add a jacket first.");
+            }
+
+            products = await getProducts();
+
+            let totalInOre = 0;
+            let itemCount = 0;
+
+            cart.forEach((item) => {
+                const product = products.find((product) => {
+                    return product.id === item.id;
+                });
+
+                if(!product) {
+                    throw new Error("A jacket is no longer available. Refresh the page and remove it befor ordering."
+                    );
+                }
+
+                const unitPriceInOre = Math.round(getUnitPrice(product) * 100);
+
+                totalInOre += unitPriceInOre * item.quantity;
+                itemCount += item.quantity;
+            });
+
+            const order = {
+                id: `RD-${Date.now()}`,
+                createdAt: new Date().toISOString(),
+                itemCount,
+                totalInOre,
+            };
+
+            sessionStorage.setItem("rainyDaysOrder", JSON.stringify(order));
+            receiptSaved = true;
+
+            clearCart();
+
+            window.location.href = "confirmation/index.html";
+        } catch (error) {
+            if (receiptSaved) {
+                try {
+                    sessionStorage.removeItem("rainyDaysOrder");
+                } catch {
+                    //Storage may be unavailable.
+                }
+            }
+
+            errorMessage.textContent =
+            error instanceof Error
+            ? error.message
+            : "We could not complete your order. Please try again.";
+
+            errorMessage.hidden = false;
+        } finally {
+            isProcessingOrder = false;
+            checkoutFields.disabled = false;
+            orderLoading.hidden = true;
+
+            cartItems.querySelectorAll("button").forEach((button) => {
+                button.disabled = false;
+            });
+        }
+    });
+
     loadCart();
