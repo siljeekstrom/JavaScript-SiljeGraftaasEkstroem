@@ -1,4 +1,6 @@
 import { getProducts } from "./api.js";
+import { addToCart } from "./cart.js";
+
 
 const priceFormatter = new Intl.NumberFormat("nb-NO", {
     style: "currency",
@@ -10,16 +12,23 @@ const loadingMessage = document.querySelector("#products-loading");
 const errorMessage = document.querySelector("#products-error");
 const genderFilter = document.querySelector("#gender-filter");
 const productsCount = document.querySelector("#products-count");
+const cartMessage = document.querySelector("#home-cart-message");
+const cartError = document.querySelector("#home-cart-error");
 
 let allProducts = [];
 
 function createProductCard(product) {
-    const link = document.createElement("a");
-    link.classList.add("product-tile");
-    link.href = `product/index.html?id=${encodeURIComponent(product.id)}`;
+    const displayTitle = product.title.replace(/^Rainy Days\s+/i, "");
+
+    const tile = document.createElement("div");
+    tile.classList.add("product-tile");
 
     const article = document.createElement("article");
     article.classList.add("product-card");
+
+    const link = document.createElement("a");
+    link.classList.add("product-link");
+    link.href = `product/index.html?id=${encodeURIComponent(product.id)}`;
 
     const image = document.createElement("img");
     image.src = product.image.url;
@@ -30,7 +39,7 @@ function createProductCard(product) {
     info.classList.add("product-info");
 
     const title = document.createElement("h3");
-    title.textContent = product.title.replace(/^Rainy Days\s+/i, "");
+    title.textContent = displayTitle;
 
     const price = document.createElement("p");
     price.classList.add("price");
@@ -48,11 +57,33 @@ function createProductCard(product) {
         price.textContent = priceFormatter.format(product.price);
     }
 
-    info.append(title, price);
-    article.append(image, info);
-    link.append(article);
+    const addButton = document.createElement("button");
+    addButton.type = "button";
+    addButton.classList.add("product-add-button");
+    addButton.textContent = "Add to Cart";
+    addButton.setAttribute("aria-label", `Add ${displayTitle} to cart`);
 
-    return link;
+    addButton.addEventListener("click", () => {
+        cartMessage.textContent = "";
+        cartError.hidden = true;
+
+        try {
+            addToCart(product.id);
+
+            cartMessage.textContent = `${displayTitle} added to your cart.`;
+        } catch (error) {
+            cartError.textContent = "We could not add this jacket to your cart. Please try again.";
+            cartError.hidden = false;
+        }
+    });
+
+    info.append(title, price);
+    link.append(image, info);
+
+    article.append(link, addButton);
+    tile.append(article);
+
+    return tile;
 }
 
 function renderProducts(products) {
