@@ -2548,3 +2548,22 @@ button.add-to-cart:focus-visible {
     border-top: 1px solid var(--color-text);
     font-size: 14px;
 }
+
+.home .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home .category-card {
+    min-width: 0;
+}
+
+.home .category-card:focus-visible {
+    outline: 3px solid var(--color-text);
+    outline-offset: 4px;
+}
+
+@media (max-width: 540px) {
+    .home .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
