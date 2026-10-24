@@ -77,7 +77,6 @@ h3 {
 .header-inner,
 .new-arrivals,
 .categories,
-.newsletter,
 .breadcrumb,
 .products-container,
 .product-detail,
@@ -609,57 +608,6 @@ button:focus-visible {
 
 .category-card span:hover {
   background: rgba(0, 0, 0, 0.55);
-}
-
-/* Newsletter */
-.newsletter {
-  margin-top: 40px;
-  text-align: center;
-  padding: 20px 15px 30px;
-}
-
-.newsletter h2 {
-  font-size: 1.3rem;
-  margin: 0 0 6px;
-}
-
-.newsletter p {
-  font-size: 1rem;
-  margin: 0 0 12px;
-}
-
-.newsletter-form {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 0px;
-}
-
-.newsletter-form input {
-  padding: 7px 10px;
-  border-radius: 6px;
-  border: 1px solid #aaaaaa;
-  width: 180px;
-}
-
-.newsletter .cta-button {
-  display: inline-flex;
-  margin: 0;
-  padding: 7px 12px;
-  border-radius: 6px;
-  border: none;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0;
-  background-color: #12455e;
-}
-.newsletter .cta-button:hover {
-  background-color: #0b2c3c;
-}
-
-.newsletter .cta-button:active {
-  background-color: #031822;
-  color: var(--color-white);
 }
 
 /* Breadcrumb */
