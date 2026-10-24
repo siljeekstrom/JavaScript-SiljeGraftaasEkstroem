@@ -184,7 +184,53 @@ checkoutForm.addEventListener("submit", async (event) => {
       throw new Error("Your cart is empty. Please add a jacket first.");
     }
 
-    products = await getProducts();
+    const updatedProducts = await getProducts();
+
+    const hasUnavailableItems = cart.some((item) => {
+      return !updatedProducts.find((product) => {
+        return product.id === item.id;
+      });
+    });
+
+    const pricesChanged = cart.some((item) => {
+      const previousProduct = products.find((product) => {
+        return product.id === item.id;
+      });
+
+      const updatedProduct = updatedProducts.find((product) => {
+        return product.id === item.id;
+      });
+
+      if (!previousProduct || !updatedProduct) {
+        return true;
+      }
+
+      const previousPriceInOre = Math.round(
+        getUnitPrice(previousProduct) * 100,
+      );
+
+      const updatedPriceInOre = Math.round(getUnitPrice(updatedProduct) * 100);
+
+      return previousPriceInOre !== updatedPriceInOre;
+    });
+
+    products = updatedProducts;
+
+    if (hasUnavailableItems) {
+      renderCart();
+
+      throw new Error(
+        "A jacket is no longer available. Please remove it from your cart before ordering.",
+      );
+    }
+
+    if (pricesChanged) {
+      renderCart();
+
+      throw new Error(
+        "Prices have changed. Your cart now shows the updated prices. Please review the total and press Complete demo purchase again to confirm.",
+      );
+    }
 
     let totalInOre = 0;
     let itemCount = 0;
