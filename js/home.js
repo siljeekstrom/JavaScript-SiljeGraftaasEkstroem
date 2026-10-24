@@ -14,6 +14,7 @@ const genderFilter = document.querySelector("#gender-filter");
 const productsCount = document.querySelector("#products-count");
 const cartMessage = document.querySelector("#home-cart-message");
 const cartError = document.querySelector("#home-cart-error");
+const categoryGender = document.body.dataset.gender || "all";
 
 let allProducts = [];
 
@@ -28,7 +29,10 @@ function createProductCard(product) {
 
     const link = document.createElement("a");
     link.classList.add("product-link");
-    link.href = `product/index.html?id=${encodeURIComponent(product.id)}`;
+    
+    const productUrl = new URL("../product/index.html", import.meta.url);
+    productUrl.searchParams.set("id", product.id);
+    link.href = productUrl.href;
 
     const image = document.createElement("img");
     image.src = product.image.url;
@@ -128,9 +132,19 @@ async function loadProducts() {
     try {
         allProducts = await getProducts();
 
-        renderProducts(allProducts);
+        genderFilter.value = categoryGender;
 
-        genderFilter.disabled = false;
+        const visibleProducts =
+        categoryGender === "all"
+        ? allProducts
+        : allProducts.filter((product) => {
+            return product.gender === categoryGender;
+        });
+
+        renderProducts(visibleProducts);
+
+        genderFilter.disabled = categoryGender !== "all";
+
     } catch (error) {
         productList.replaceChildren();
         productsCount.textContent = "";
