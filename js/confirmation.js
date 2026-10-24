@@ -1,4 +1,4 @@
-import { priceFormatter } from "./utils";
+import { priceFormatter } from "./utils.js";
 
 const message = document.querySelector("#confirmation-message");
 const details = document.querySelector("#order-details");
