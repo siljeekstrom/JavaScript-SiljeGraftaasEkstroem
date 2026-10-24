@@ -1,10 +1,6 @@
 import { getProduct } from "./api.js";
 import { addToCart } from "./cart.js";
-
-const priceFormatter = new Intl.NumberFormat("nb-NO", {
-    style: "currency",
-    currency: "NOK",
-});
+import { priceFormatter } from "./utils.js";
 
 const loadingMessage = document.querySelector("#product-loading");
 const errorMessage = document.querySelector("#product-error");

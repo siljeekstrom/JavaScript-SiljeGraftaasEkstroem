@@ -1,10 +1,7 @@
+import { priceFormatter } from "./utils";
+
 const message = document.querySelector("#confirmation-message");
 const details = document.querySelector("#order-details");
-
-const priceFormatter = new Intl.NumberFormat("nb-NO", {
-    style: "currency",
-    currency: "NOK",
-});
 
 function showConfirmation() {
     try {
