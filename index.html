@@ -91,24 +91,22 @@
       </section>
 
       <section class="new-arrivals" aria-labelledby="products-title">
-        <h2 id="products-title">Our Jackets</h2>
+        <div class="jackets-heading">
+          <h2 id="products-title">Our Jackets</h2>
 
-        <nav class="category-navigation" aria-label="Jacket categories">
-          <a href="category/mens-clothing.html">Men's jackets</a>
-          <a href="category/womens-clothing.html">Womens jackets</a>
-        </nav>
+          <div class="jackets-filter-group">
+            <div class="product-filter">
+              <label for="gender-filter">Filter by gender</label>
 
-        <div class="product-filter">
-          <label for="gender-filter">Filter by gender</label>
-
-          <select id="gender-filter" disabled>
-            <option value="all">All jackets</option>
-            <option value="Female">Women</option>
-            <option value="Male">Men</option>
-          </select>
+              <select id="gender-filter" disabled>
+                <option value="all">All jackets</option>
+                <option value="Female">Women</option>
+                <option value="Male">Men</option>
+              </select>
+            </div>
+            <p id="products-count" role="status"></p>
+          </div>
         </div>
-
-        <p id="products-count" role="status"></p>
 
         <p id="products-loading" role="status" hidden>Loading products...</p>
 
