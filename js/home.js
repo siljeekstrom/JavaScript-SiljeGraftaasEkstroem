@@ -102,20 +102,18 @@ function renderProducts(products) {
   });
 }
 
-genderFilter.addEventListener("change", () => {
-  const selectedGender = genderFilter.value;
-
-  if (selectedGender === "all") {
-    renderProducts(allProducts);
-    return;
-  }
+function applyFilters() {
+  const selectedGender =
+    categoryGender === "all" ? genderFilter.value : categoryGender;
 
   const filteredProducts = allProducts.filter((product) => {
-    return product.gender === selectedGender;
+    return selectedGender === "all" || product.gender === selectedGender;
   });
 
   renderProducts(filteredProducts);
-});
+}
+
+genderFilter.addEventListener("change", applyFilters);
 
 async function loadProducts() {
   loadingMessage.hidden = false;
@@ -129,15 +127,7 @@ async function loadProducts() {
     allProducts = await getProducts();
 
     genderFilter.value = categoryGender;
-
-    const visibleProducts =
-      categoryGender === "all"
-        ? allProducts
-        : allProducts.filter((product) => {
-            return product.gender === categoryGender;
-          });
-
-    renderProducts(visibleProducts);
+    applyFilters();
 
     genderFilter.disabled = categoryGender !== "all";
   } catch (error) {

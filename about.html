@@ -33,16 +33,39 @@
           </ul>
         </nav>
 
-        <div class="header-buttons">
-          <button type="button" class="button-icon button-search">
-            <span class="button-label">Search</span>
-            <img
-              src="icons/search-icon.png"
-              alt=""
-              aria-hidden="true"
-              class="button-icon-image"
-            />
-          </button>
+        <form
+        id="header-search"
+        class="product-search header-search"
+        role="search"
+        autocomplete="off"
+        >
+
+        <label for="product-search" class="sr-only">Search jackets</label>
+
+        <div class="header-search-control">
+          <input
+          id="product-search"
+          name="search"
+          type="search"
+          placeholder="Search"
+          aria-controls="search-suggestions"/>
+
+          <button
+          type="submit"
+          class="header-search-submit"
+          aria-label="Search jackets">
+        <img
+        src="icons/search-icon.png"
+        alt=""
+        aria-hidden="true"/>
+        </button>
+        </div>
+
+        <div id="search-dropdown" class="search-dropdown" hidden>
+          <p id="search-status" role="status"></p>
+          <ul id="search-suggestions"></ul>
+        </div>
+        </form>
 
           <a href="checkout/index.html" class="button-icon button-cart">
             <span class="button-label">Cart</span>
@@ -152,5 +175,6 @@
         </div>
       </div>
     </footer>
+    <script type="module" src="js/header.js"></script>
   </body>
 </html>
