@@ -1245,26 +1245,30 @@ footer p {
   justify-content: center;
 }
 
-.cart-badge {
-  position: absolute;
-  top: -23px;
-  right: -25px;
-  min-width: 25px;
-  height: 25px;
-  padding: 0 5px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  color: #000;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .button-cart {
   position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cart-badge[hidden] {
+  display: none;
 }
 
 .button-cart .button-cart-image {

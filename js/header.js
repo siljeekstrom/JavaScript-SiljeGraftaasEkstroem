@@ -1,5 +1,6 @@
 import { getProducts } from "./api.js";
 import { priceFormatter } from "./utils.js";
+import "./cart-count.js";
 
 const searchForm = document.querySelector("#header-search");
 const searchInput = document.querySelector("#product-search");

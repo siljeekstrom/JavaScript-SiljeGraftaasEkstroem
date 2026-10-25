@@ -72,6 +72,8 @@ export function addToCart(productId) {
   }
 
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+  window.dispatchEvent(new Event("cart-updated"));
 }
 
 export function removeFromCart(productId) {
@@ -82,8 +84,11 @@ export function removeFromCart(productId) {
   });
 
   localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
+
+  window.dispatchEvent(new Event("cart-updated"));
 }
 
 export function clearCart() {
   localStorage.removeItem(CART_KEY);
+  window.dispatchEvent(new Event("cart-updated"));
 }
