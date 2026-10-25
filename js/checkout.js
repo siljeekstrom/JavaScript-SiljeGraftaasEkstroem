@@ -1,5 +1,10 @@
 import { getProducts } from "./api.js";
-import { getCart, removeFromCart, clearCart } from "./cart.js";
+import {
+  getCart,
+  removeFromCart,
+  clearCart,
+  InvalidCartError,
+} from "./cart.js";
 import { priceFormatter } from "./utils.js";
 
 const cartTitle = document.querySelector("#cart-title");
@@ -12,6 +17,7 @@ const cartTotal = document.querySelector("#cart-total");
 const checkoutForm = document.querySelector("#checkout-form");
 const checkoutFields = document.querySelector("#checkout-fields");
 const orderLoading = document.querySelector("#order-loading");
+const resetCartButton = document.querySelector("#reset-cart");
 
 let isProcessingOrder = false;
 
@@ -134,6 +140,7 @@ function renderCart() {
 async function loadCart() {
   loadingMessage.hidden = false;
   errorMessage.hidden = true;
+  resetCartButton.hidden = true;
   emptyMessage.hidden = true;
   cartSummary.hidden = true;
   checkoutForm.hidden = true;
@@ -150,9 +157,16 @@ async function loadCart() {
     cartItems.replaceChildren();
     emptyMessage.hidden = true;
     cartSummary.hidden = true;
+    checkoutForm.hidden = true;
 
-    errorMessage.textContent =
-      "We could not load you cart. Please refresh the page and try again.";
+    if (error instanceof InvalidCartError) {
+      errorMessage.textContent = error.message;
+      resetCartButton.hidden = false;
+    } else {
+      errorMessage.textContent =
+        "We could not load you cart. Please refresh the page and try again.";
+    }
+
     errorMessage.hidden = false;
   } finally {
     loadingMessage.hidden = true;
@@ -288,6 +302,22 @@ checkoutForm.addEventListener("submit", async (event) => {
     cartItems.querySelectorAll("button").forEach((button) => {
       button.disabled = false;
     });
+  }
+});
+
+resetCartButton.addEventListener("click", async () => {
+  resetCartButton.disabled = true;
+
+  try {
+    clearCart();
+    await loadCart();
+    cartTitle.focus();
+  } catch {
+    errorMessage.textContent =
+      "We could not reset your cart. Please check that browser storage is available and try again";
+    errorMessage.hidden = false;
+  } finally {
+    resetCartButton.disabled = false;
   }
 });
 

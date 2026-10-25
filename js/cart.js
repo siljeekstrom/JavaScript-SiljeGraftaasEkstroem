@@ -1,5 +1,7 @@
 const CART_KEY = "rainyDaysCart";
 
+export class InvalidCartError extends Error {}
+
 export function getCart() {
   const storedCart = localStorage.getItem(CART_KEY);
 
@@ -12,14 +14,14 @@ export function getCart() {
   try {
     cart = JSON.parse(storedCart);
   } catch {
-    throw new Error(
-      "Your saved cart could not be loaded. Please clear your browser data and try again.",
+    throw new InvalidCartError(
+      "Your saved cart could not be read. Reset your cart to continue.",
     );
   }
 
   if (!Array.isArray(cart)) {
-    throw new Error(
-      "Your saved cart is invalid. Please clear your browser data and try again.",
+    throw new InvalidCartError(
+      "Your saved cart is invalid. Reset your cart to continue.",
     );
   }
 
@@ -35,8 +37,8 @@ export function getCart() {
   });
 
   if (!validItems) {
-    throw new Error(
-      "Your saved cart contains invalid items. Please clear your browser data and try again.",
+    throw new InvalidCartError(
+      "Your saved cart contains invalid items. Reset your cart to continue.",
     );
   }
 

@@ -2741,3 +2741,7 @@ button.add-to-cart:focus-visible {
 .search-result-info span:last-child {
   font-size: 14px;
 }
+
+#reset-cart[hidden] {
+  display: none;
+}
