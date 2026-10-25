@@ -1,6 +1,7 @@
 import { getProducts } from "./api.js";
 import { addToCart } from "./cart.js";
 import { priceFormatter } from "./utils.js";
+import { showCartNotification } from "./cart-notification.js";
 
 const productList = document.querySelector("#product-list");
 const loadingMessage = document.querySelector("#products-loading");
@@ -70,6 +71,7 @@ function createProductCard(product) {
       addToCart(product.id);
 
       cartMessage.textContent = `${displayTitle} added to your cart.`;
+      showCartNotification(product);
     } catch (error) {
       cartError.textContent =
         "We could not add this jacket to your cart. Please try again.";

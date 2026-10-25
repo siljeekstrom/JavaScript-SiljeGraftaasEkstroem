@@ -1,6 +1,7 @@
 import { getProduct } from "./api.js";
 import { addToCart } from "./cart.js";
 import { priceFormatter } from "./utils.js";
+import { showCartNotification } from "./cart-notification.js";
 
 const loadingMessage = document.querySelector("#product-loading");
 const errorMessage = document.querySelector("#product-error");
@@ -93,6 +94,7 @@ addToCartButton.addEventListener("click", () => {
     const displayTitle = currentProduct.title.replace(/^Rainy Days\s+/i, "");
 
     cartMessage.textContent = `${displayTitle} added to your cart.`;
+    showCartNotification(currentProduct);
   } catch (error) {
     cartError.textContent =
       "We could not add this jacket to your cart. Please check that browser storage is available and try again.";
