@@ -104,7 +104,7 @@ function renderProducts(products) {
 
 function applyFilters() {
   const selectedGender =
-    categoryGender === "all" ? genderFilter.value : categoryGender;
+    categoryGender === "all" ? (genderFilter?.value ?? "all") : categoryGender;
 
   const filteredProducts = allProducts.filter((product) => {
     return selectedGender === "all" || product.gender === selectedGender;
@@ -113,12 +113,18 @@ function applyFilters() {
   renderProducts(filteredProducts);
 }
 
-genderFilter.addEventListener("change", applyFilters);
+if (genderFilter) {
+  genderFilter.addEventListener("change", applyFilters);
+}
 
 async function loadProducts() {
   loadingMessage.hidden = false;
   errorMessage.hidden = true;
-  genderFilter.disabled = true;
+
+  if (genderFilter) {
+    genderFilter.disabled = true;
+  }
+
   productsCount.textContent = "";
   productList.replaceChildren();
   productList.setAttribute("aria-busy", "true");
@@ -126,10 +132,15 @@ async function loadProducts() {
   try {
     allProducts = await getProducts();
 
-    genderFilter.value = categoryGender;
+    if (genderFilter) {
+      genderFilter.value = categoryGender;
+    }
+
     applyFilters();
 
-    genderFilter.disabled = categoryGender !== "all";
+    if (genderFilter) {
+      genderFilter.disabled = categoryGender !== "all";
+    }
   } catch (error) {
     productList.replaceChildren();
     productsCount.textContent = "";
