@@ -182,7 +182,7 @@ header nav {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 70px;
+  gap: 32px;
 }
 
 header nav ul {
@@ -2851,4 +2851,20 @@ button.add-to-cart:focus-visible {
 .jackets-filter-group #products-count {
   margin: 0;
   font-size: 14px;
+}
+
+@media (min-width: 861px) {
+  .nav-links > li + li {
+    position: relative;
+  }
+
+  .nav-links > li + li::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    border-left: 1px solid rgba(11, 44, 60, 0.3);
+  }
 }
