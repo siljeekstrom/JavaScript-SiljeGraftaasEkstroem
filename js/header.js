@@ -117,38 +117,44 @@ if (searchForm && searchInput && dropdown && suggestions && status) {
 
   searchForm.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      const isMobile = window.matchMedia("(max-width: 860px)").matches;
+
+      if (isMobile) {
+        searchForm.classList.remove("is-open");
+        searchForm.querySelector(".header-search-submit").focus();
+      } else {
+        searchInput.focus();
+      }
+
       closeSuggestions();
-      searchInput.focus();
     }
   });
 
   document.addEventListener("click", (event) => {
     if (!searchForm.contains(event.target)) {
       closeSuggestions();
+      searchForm.classList.remove("is-open");
     }
   });
 
   searchForm.addEventListener("focusout", (event) => {
     if (!searchForm.contains(event.relatedTarget)) {
       closeSuggestions();
+      searchForm.classList.remove("is-open");
     }
   });
 
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    closeSuggestions();
 
-    if (document.querySelector("#product-list")) {
+    const isMobile = window.matchMedia("(max-width: 860px)").matches;
+
+    if (isMobile && !searchForm.classList.contains("is-open")) {
+      searchForm.classList.add("is-open");
+      searchInput.focus();
       return;
     }
 
-    const searchUrl = new URL("../index.html", import.meta.url);
-    const searchTerm = searchInput.ariaValueMax.trim();
-
-    if (searchTerm) {
-      searchUrl.searchParams.set("q", searchterm);
-    }
-
-    window.location.href = searchUrl.href;
+    showSuggestions();
   });
 }

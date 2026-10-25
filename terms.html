@@ -30,39 +30,38 @@
           </ul>
         </nav>
 
-        <form
-        id="header-search"
-        class="product-search header-search"
-        role="search"
-        autocomplete="off"
-        >
+        <div class="header-buttons">
+          <form
+            id="header-search"
+            class="product-search header-search"
+            role="search"
+            autocomplete="off"
+          >
+            <label for="product-search" class="sr-only">Search jackets</label>
 
-        <label for="product-search" class="sr-only">Search jackets</label>
+            <div class="header-search-control">
+              <input
+                id="product-search"
+                name="search"
+                type="search"
+                placeholder="Search"
+                aria-controls="search-suggestions"
+              />
 
-        <div class="header-search-control">
-          <input
-          id="product-search"
-          name="search"
-          type="search"
-          placeholder="Search"
-          aria-controls="search-suggestions"/>
+              <button
+                type="submit"
+                class="header-search-submit"
+                aria-label="Search jackets"
+              >
+                <img src="icons/search-icon.png" alt="" aria-hidden="true" />
+              </button>
+            </div>
 
-          <button
-          type="submit"
-          class="header-search-submit"
-          aria-label="Search jackets">
-        <img
-        src="icons/search-icon.png"
-        alt=""
-        aria-hidden="true"/>
-        </button>
-        </div>
-
-        <div id="search-dropdown" class="search-dropdown" hidden>
-          <p id="search-status" role="status"></p>
-          <ul id="search-suggestions"></ul>
-        </div>
-        </form>
+            <div id="search-dropdown" class="search-dropdown" hidden>
+              <p id="search-status" role="status"></p>
+              <ul id="search-suggestions"></ul>
+            </div>
+          </form>
 
           <a href="checkout/index.html" class="button-icon button-cart">
             <span class="button-label">Cart</span>

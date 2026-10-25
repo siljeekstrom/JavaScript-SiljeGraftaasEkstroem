@@ -2664,9 +2664,9 @@ button.add-to-cart:focus-visible {
 
 #search-suggestions a {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   padding: 14px 8px;
   border-radius: 6px;
   color: var(--color-text);
@@ -2683,42 +2683,6 @@ button.add-to-cart:focus-visible {
   background-color: var(--color-header);
 }
 
-/* Keep mobile search inside the header */
-@media (max-width: 860px) {
-  .header-inner {
-    grid-template-columns: 44px minnmax(0, 1fr);
-    grid-template-areas:
-      "burger logo"
-      "buttons buttons";
-  }
-
-  .header-buttons {
-    width: 100%;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  #header-search {
-    flex: 1;
-    max-width: 280px;
-    min-width: 0;
-  }
-
-  .header-search-control {
-    height: 44px;
-  }
-
-  #header-search .header-search-submit {
-    width: 36px;
-    height: 40px;
-  }
-}
-
-#search-suggestions a {
-  justify-content: flex-start;
-}
-
 .search-result-image {
   flex-shrink: 0;
   width: 56px;
@@ -2730,8 +2694,12 @@ button.add-to-cart:focus-visible {
 .search-result-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
   gap: 4px;
   min-width: 0;
+  margin: 0;
+  text-align: left;
 }
 
 .search-result-info span:first-child {
@@ -2744,4 +2712,103 @@ button.add-to-cart:focus-visible {
 
 #reset-cart[hidden] {
   display: none;
+}
+
+@media (max-width: 860px) {
+  .header-inner--mobile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    grid-template-areas: "burger logo buttons";
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-inner--mobile .logo {
+    min-width: 0;
+    justify-self: center;
+  }
+
+  .header-inner--mobile .logo img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .header-inner--mobile .header-buttons {
+    grid-area: buttons;
+    justify-self: end;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 44px;
+    padding: 0;
+    gap: 8px;
+  }
+
+  #header-search {
+    position: static;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 0;
+    max-width: none;
+    height: 44px;
+    margin: 0;
+  }
+
+  #header-search .header-search-control {
+    position: static;
+    display: flex;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  #header-search input {
+    display: none;
+  }
+
+  #header-search .header-search-submit {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+  }
+
+  .header-search-submit img {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Reserve space below the logo when search opens */
+  .header-inner:has(#header-search.is-open) {
+    padding-bottom: 84px;
+  }
+
+  #header-search.is-open .header-search-control {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 20px;
+    z-index: 1100;
+    width: auto;
+    padding-left: 16px;
+    border: 1px solid var(--color-text);
+    background: #f7fbff;
+  }
+
+  #header-search.is-open input {
+    display: block;
+  }
+
+  #header-search .search-dropdown {
+    top: calc(100% - 8px);
+    left: 24px;
+    right: 24px;
+    width: auto;
+    max-width: none;
+  }
 }
