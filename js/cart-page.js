@@ -139,9 +139,11 @@ function createCartItem(item, product) {
     const unitPrice = getUnitPrice(product);
     const lineTotal = Math.round(unitPrice * 100) * item.quantity;
 
-    price.textContent =
-      `${priceFormatter.format(unitPrice)} each · ` +
-      `${priceFormatter.format(lineTotal / 100)} total`;
+    const totalPrice = document.createElement("span");
+    totalPrice.classList.add("cart-line-total");
+    totalPrice.textContent = priceFormatter.format(lineTotal / 100);
+
+    price.append(totalPrice);
   } else {
     price.textContent =
       "This jacket is no longer available. Please remove it from your cart.";

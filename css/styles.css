@@ -2966,7 +2966,7 @@ button.add-to-cart:focus-visible {
 /* Shopping cart actions */
 .cart-page-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
@@ -3023,7 +3023,7 @@ button.add-to-cart:focus-visible {
   font-size: 20px;
 }
 
-.cart-quantity button:hover:not(:diabled) {
+.cart-quantity button:hover:not(:disabled) {
   background: var(--color-header);
 }
 
@@ -3035,4 +3035,91 @@ button.add-to-cart:focus-visible {
 .cart-quantity span {
   min-width: 24px;
   text-align: center;
+}
+
+/* Shopping cart product layout */
+.page-cart .cart-item-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "name price"
+    "quantity price"
+    "remove price";
+  align-items: start;
+  gap: 12px 24px;
+  padding-top: 4px;
+}
+
+.page-cart .cart-item-name {
+  grid-area: name;
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.page-cart .cart-quantity {
+  grid-area: quantity;
+  margin: 0;
+}
+
+.page-cart .cart-item-price {
+  grid-area: price;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  text-align: right;
+  white-space: normal;
+}
+
+.page-cart .cart-line-total {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.page-cart .cart-unit-price {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.page-cart .remove-from-cart {
+  grid-area: remove;
+  justify-self: start;
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.page-cart .remove-from-cart:hover {
+  color: var(--color-accent-hover);
+}
+
+/* The last product already has a dividing line */
+.page-cart .cart-summary-row.total {
+  margin-top: 0;
+  border-top: 0;
+}
+
+@media (max-width: 540px) {
+  .page-cart .cart-item-details {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "name"
+      "price"
+      "quantity"
+      "remove";
+    gap: 10px;
+  }
+
+  .page-cart .cart-item-price {
+    text-align: left;
+  }
 }
