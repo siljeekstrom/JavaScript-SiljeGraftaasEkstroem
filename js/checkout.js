@@ -1,10 +1,5 @@
 import { getProducts } from "./api.js";
-import {
-  getCart,
-  removeFromCart,
-  clearCart,
-  InvalidCartError,
-} from "./cart.js";
+import { getCart, clearCart, InvalidCartError } from "./cart.js";
 import { priceFormatter } from "./utils.js";
 
 const cartTitle = document.querySelector("#cart-title");
@@ -38,8 +33,15 @@ function createCartItem(item, product) {
   const details = document.createElement("div");
   details.classList.add("cart-item-details");
 
-  const title = document.createElement("h2");
+  const title = document.createElement("h3");
   title.classList.add("cart-item-name");
+
+  const quantity = document.createElement("p");
+  quantity.classList.add("checkout-item-quantity");
+  quantity.textContent = `Quantity: ${item.quantity}`;
+
+  const price = document.createElement("p");
+  price.classList.add("cart-item-price");
 
   if (product) {
     const imageContainer = document.createElement("div");
@@ -57,50 +59,24 @@ function createCartItem(item, product) {
     article.append(imageContainer);
 
     title.textContent = product.title.replace(/^Rainy Days\s+/i, "");
+
+    const lineTotalInOre =
+      Math.round(getUnitPrice(product) * 100) * item.quantity;
+
+    price.textContent = priceFormatter.format(lineTotalInOre / 100);
   } else {
     title.textContent = "Unavailable jacket";
+    price.textContent = "Unavailable";
+
+    const message = document.createElement("p");
+    message.textContent =
+      "Return to your cart to remove this jacket before ordering.";
+
+    details.append(message);
   }
 
-  const quantity = document.createElement("p");
-  quantity.textContent = `Quantity: ${item.quantity}`;
-
-  const price = document.createElement("p");
-  price.classList.add("cart-item-price");
-
-  if (product) {
-    const unitPrice = getUnitPrice(product);
-    const lineTotal = Math.round(unitPrice * 100) * item.quantity;
-
-    price.textContent =
-      `${priceFormatter.format(unitPrice)} each · ` +
-      `${priceFormatter.format(lineTotal / 100)} total`;
-  } else {
-    price.textContent =
-      "This jacket is no longer available. Please remove it from your cart.";
-  }
-
-  const removeButton = document.createElement("button");
-  removeButton.type = "button";
-  removeButton.classList.add("remove-from-cart");
-  removeButton.textContent = "Remove";
-  removeButton.setAttribute("aria-label", `Remove ${title.textContent}`);
-
-  removeButton.addEventListener("click", () => {
-    errorMessage.hidden = true;
-
-    try {
-      removeFromCart(item.id);
-      renderCart();
-      cartTitle.focus();
-    } catch (error) {
-      errorMessage.textContent =
-        "We could not update your cart. Please try again.";
-      errorMessage.hidden = false;
-    }
-  });
-
-  details.append(title, quantity, price, removeButton);
-  article.append(details);
+  details.prepend(title, quantity);
+  article.append(details, price);
 
   return article;
 }
