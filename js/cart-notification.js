@@ -92,7 +92,7 @@ export function showCartNotification(product) {
 
   const cartLink = document.createElement("a");
   cartLink.classList.add("cart-notification-link");
-  cartLink.href = new URL("../checkout/index.html", import.meta.url).href;
+  cartLink.href = new URL("../cart/index.html", import.meta.url).href;
   cartLink.textContent = "View cart";
 
   notification.append(heading, closeButton, productDetails, cartLink);

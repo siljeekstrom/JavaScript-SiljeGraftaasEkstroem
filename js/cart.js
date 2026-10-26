@@ -92,3 +92,21 @@ export function clearCart() {
   localStorage.removeItem(CART_KEY);
   window.dispatchEvent(new Event("cart-updated"));
 }
+
+export function updateCartQuantity(productId, quantity) {
+  if (!Number.isSafeInteger(quantity) || quantity < 1) {
+    throw new Error("Quantity must be a positive whole number");
+  }
+
+  const cart = getCart();
+  const item = cart.find((item) => item.id === productId);
+
+  if (!item) {
+    throw new Error("This jacket is no longer in your cart");
+  }
+
+  item.quantity = quantity;
+
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  window.dispatchEvent(new Event("cart-updated"));
+}
