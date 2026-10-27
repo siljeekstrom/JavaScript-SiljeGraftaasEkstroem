@@ -18,6 +18,11 @@ const relatedProductsSection = document.querySelector("#related-products");
 const relatedProductsList = document.querySelector("#related-products-list");
 const sizeFieldset = document.querySelector("#product-size-fieldset");
 const productSizes = document.querySelector("#product-sizes");
+const relatedProductsLoading = document.querySelector(
+  "#related-products-loading",
+);
+const relatedProductsError = document.querySelector("#related-products-error");
+const relatedProductsEmpty = document.querySelector("#related-products-empty");
 
 let currentProduct = null;
 
@@ -147,8 +152,12 @@ addToCartButton.addEventListener("click", () => {
 });
 
 async function loadRelatedProducts(currentProduct) {
-  relatedProductsSection.hidden = true;
+  relatedProductsSection.hidden = false;
+  relatedProductsLoading.hidden = false;
+  relatedProductsError.hidden = true;
+  relatedProductsEmpty.hidden = true;
   relatedProductsList.replaceChildren();
+  relatedProductsList.setAttribute("aria-busy", "true");
 
   try {
     const products = await getProducts();
@@ -163,6 +172,7 @@ async function loadRelatedProducts(currentProduct) {
       .slice(0, 3);
 
     if (relatedProducts.length === 0) {
+      relatedProductsEmpty.hidden = false;
       return;
     }
 
@@ -209,7 +219,14 @@ async function loadRelatedProducts(currentProduct) {
     relatedProductsSection.hidden = false;
   } catch {
     relatedProductsList.replaceChildren();
-    relatedProductsSection.hidden = true;
+
+    relatedProductsError.textContent =
+      "We could not load related jackets. Please refresh the page to try again.";
+
+    relatedProductsError.hidden = false;
+  } finally {
+    relatedProductsLoading.hidden = true;
+    relatedProductsList.setAttribute("aria-busy", "false");
   }
 }
 
