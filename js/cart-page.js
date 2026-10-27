@@ -15,6 +15,7 @@ const emptyMessage = document.querySelector("#cart-empty");
 const cartItems = document.querySelector("#cart-items");
 const cartSummary = document.querySelector("#cart-summary");
 const cartTotal = document.querySelector("#cart-total");
+const cartItemCount = document.querySelector("#cart-item-count");
 const resetCartButton = document.querySelector("#reset-cart");
 const checkoutLink = document.querySelector("#checkout-link");
 
@@ -177,6 +178,12 @@ function createCartItem(item, product) {
 
 function renderCart() {
   const cart = getCart();
+
+  const totalQuantity = cart.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
+
+  cartItemCount.textContent = `(${totalQuantity})`;
 
   cartItems.replaceChildren();
   emptyMessage.hidden = cart.length > 0;
