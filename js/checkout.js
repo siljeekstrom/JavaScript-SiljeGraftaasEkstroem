@@ -26,6 +26,12 @@ function getUnitPrice(product) {
   return product.price;
 }
 
+function hasValidSize(item, product) {
+  return (
+    product && Array.isArray(product.sizes) && product.sizes.includes(item.size)
+  );
+}
+
 function createCartItem(item, product) {
   const article = document.createElement("article");
   article.classList.add("cart-item");
@@ -39,6 +45,13 @@ function createCartItem(item, product) {
   const quantity = document.createElement("p");
   quantity.classList.add("checkout-item-quantity");
   quantity.textContent = `Quantity: ${item.quantity}`;
+
+  const size = document.createElement("p");
+  size.classList.add("checkout-item-quantity");
+
+  size.textContent = hasValidSize(item, product)
+    ? `Size: ${item.size}`
+    : "Size missing or unavailable. Return to cart to update this item.";
 
   const price = document.createElement("p");
   price.classList.add("cart-item-price");
@@ -75,7 +88,7 @@ function createCartItem(item, product) {
     details.append(message);
   }
 
-  details.prepend(title, quantity);
+  details.prepend(title, size, quantity);
   article.append(details, price);
 
   return article;
@@ -90,11 +103,16 @@ function renderCart() {
 
   let totalInOre = 0;
   let hasUnavailableItems = false;
+  let hasInvalidSizes = false;
 
   cart.forEach((item) => {
     const product = products.find((product) => {
       return product.id === item.id;
     });
+
+    if (product && !hasValidSize(item, product)) {
+      hasInvalidSizes = true;
+    }
 
     if (product) {
       const unitPriceInOre = Math.round(getUnitPrice(product) * 100);
@@ -133,7 +151,8 @@ async function loadCart() {
     cartItems.replaceChildren();
     emptyMessage.hidden = true;
     cartSummary.hidden = true;
-    checkoutForm.hidden = true;
+    checkoutForm.hidden =
+      cart.length === 0 || hasUnavailableItems || hasInvalidSizes;
 
     if (error instanceof InvalidCartError) {
       errorMessage.textContent = error.message;
@@ -211,6 +230,20 @@ checkoutForm.addEventListener("submit", async (event) => {
 
       throw new Error(
         "A jacket is no longer available. Please remove it from your cart before ordering.",
+      );
+    }
+
+    const hasInvalidSizes = cart.some((item) => {
+      const product = products.find((product) => product.id === item.id);
+
+      return !hasValidSize(item, product);
+    });
+
+    if (hasInvalidSizes) {
+      renderCart();
+
+      throw new Error(
+        "A selected size is missing or no longer available. Please return to your cart and update the item before ordering.",
       );
     }
 

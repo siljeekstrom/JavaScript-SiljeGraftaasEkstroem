@@ -1,4 +1,4 @@
-import { getProduct } from "./api.js";
+import { getProduct, getProducts } from "./api.js";
 import { addToCart } from "./cart.js";
 import { priceFormatter } from "./utils.js";
 import { showCartNotification } from "./cart-notification.js";
@@ -6,7 +6,6 @@ import { showCartNotification } from "./cart-notification.js";
 const loadingMessage = document.querySelector("#product-loading");
 const errorMessage = document.querySelector("#product-error");
 const productContent = document.querySelector("#product-content");
-
 const productTitle = document.querySelector("#product-title");
 const productImage = document.querySelector("#product-image");
 const productPrice = document.querySelector("#product-price");
@@ -15,6 +14,10 @@ const productBreadcrumb = document.querySelector("#product-breadcrumb");
 const addToCartButton = document.querySelector("#add-to-cart");
 const cartMessage = document.querySelector("#cart-message");
 const cartError = document.querySelector("#cart-error");
+const relatedProductsSection = document.querySelector("#related-products");
+const relatedProductsList = document.querySelector("#related-products-list");
+const sizeFieldset = document.querySelector("#product-size-fieldset");
+const productSizes = document.querySelector("#product-sizes");
 
 let currentProduct = null;
 
@@ -63,11 +66,39 @@ async function loadProduct() {
 
     const product = await getProduct(productId);
 
+    function renderSizes(product) {
+      productSizes.replaceChildren();
+
+      const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+
+      sizeFieldset.hidden = sizes.length === 0;
+
+      sizes.forEach((size, index) => {
+        const label = document.createElement("label");
+        label.classList.add("product-size-option");
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "product-size";
+        input.value = size;
+        input.id = `product-size-${index}`;
+
+        const text = document.createElement("span");
+        text.textContent = size;
+
+        label.htmlFor = input.id;
+        label.append(input, text);
+        productSizes.append(label);
+      });
+    }
+
     renderProduct(product);
+    renderSizes(product);
 
     currentProduct = product;
     addToCartButton.disabled = false;
     productContent.hidden = false;
+    loadRelatedProducts(product);
   } catch (error) {
     errorMessage.textContent =
       error instanceof Error
@@ -89,11 +120,23 @@ addToCartButton.addEventListener("click", () => {
       throw new Error("Please wait until the jacket has loaded");
     }
 
-    addToCart(currentProduct.id);
+    const selectedSize = productSizes.querySelector(
+      `input[name="product-size"]:checked`,
+    );
+
+    if (!selectedSize) {
+      cartError.textContent = "Please choose a size before adding this jacket.";
+      cartError.hidden = false;
+
+      productSizes.querySelector("input")?.focus();
+      return;
+    }
+
+    addToCart(currentProduct.id, selectedSize.value);
 
     const displayTitle = currentProduct.title.replace(/^Rainy Days\s+/i, "");
 
-    cartMessage.textContent = `${displayTitle} added to your cart.`;
+    cartMessage.textContent = `${displayTitle}, size ${selectedSize.value}, added to your cart.`;
     showCartNotification(currentProduct);
   } catch (error) {
     cartError.textContent =
@@ -102,5 +145,72 @@ addToCartButton.addEventListener("click", () => {
     cartError.hidden = false;
   }
 });
+
+async function loadRelatedProducts(currentProduct) {
+  relatedProductsSection.hidden = true;
+  relatedProductsList.replaceChildren();
+
+  try {
+    const products = await getProducts();
+
+    const relatedProducts = products
+      .filter((product) => {
+        return (
+          product.id !== currentProduct.id &&
+          product.gender === currentProduct.gender
+        );
+      })
+      .slice(0, 3);
+
+    if (relatedProducts.length === 0) {
+      return;
+    }
+
+    relatedProducts.forEach((product) => {
+      const article = document.createElement("article");
+      article.classList.add("recommendation-card");
+
+      const link = document.createElement("a");
+      link.classList.add("recommendation-link");
+
+      const productUrl = new URL("../product/index.html", import.meta.url);
+      productUrl.searchParams.set("id", product.id);
+      link.href = productUrl.href;
+
+      const image = document.createElement("img");
+      image.src = product.image.url;
+      image.alt = product.image.alt || product.title;
+      image.loading = "lazy";
+
+      const title = document.createElement("h3");
+      title.textContent = product.title.replace(/^Rainy Days\s+/i, "");
+
+      const price = document.createElement("p");
+      price.classList.add("recommendation-price");
+
+      if (product.onSale && product.discountedPrice < product.price) {
+        const originalPrice = document.createElement("del");
+        originalPrice.textContent = priceFormatter.format(product.price);
+
+        const salePrice = document.createElement("span");
+        salePrice.classList.add("sale-price");
+        salePrice.textContent = priceFormatter.format(product.discountedPrice);
+
+        price.append(originalPrice, salePrice);
+      } else {
+        price.textContent = priceFormatter.format(product.price);
+      }
+
+      link.append(image, title, price);
+      article.append(link);
+      relatedProductsList.append(article);
+    });
+
+    relatedProductsSection.hidden = false;
+  } catch {
+    relatedProductsList.replaceChildren();
+    relatedProductsSection.hidden = true;
+  }
+}
 
 loadProduct();

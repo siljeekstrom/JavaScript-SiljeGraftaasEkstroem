@@ -59,6 +59,24 @@ function createCartItem(item, product) {
     title.textContent = "Unavailable jacket";
   }
 
+  const itemSize = item.size ?? null;
+  const itemLabel = `${title.textContent}, size ${itemSize ?? "not selected"}`;
+
+  const size = document.createElement("p");
+  size.classList.add("cart-item-size");
+
+  const hasValidSize =
+    product && Array.isArray(product.sizes) && product.sizes.includes(itemSize);
+
+  if (hasValidSize) {
+    size.textContent = `Size: ${itemSize}`;
+  } else if (product) {
+    size.textContent =
+      "Size missing or unavailable. Remove this item and choose size on the product page.";
+  } else {
+    size.textContent = `Size: ${itemSize ?? "Not selected"}`;
+  }
+
   const quantity = document.createElement("div");
   quantity.classList.add("cart-quantity");
 
@@ -68,7 +86,7 @@ function createCartItem(item, product) {
   decreaseButton.disabled = item.quantity === 1;
   decreaseButton.setAttribute(
     "aria-label",
-    `Decrease quantity of ${title.textContent}`,
+    `Decrease quantity of ${itemLabel}`,
   );
 
   const quantityValue = document.createElement("span");
@@ -80,7 +98,7 @@ function createCartItem(item, product) {
   increaseButton.textContent = "+";
   increaseButton.setAttribute(
     "aria-label",
-    `Increase quantity of ${title.textContent}`,
+    `Increase quantity of ${itemLabel}`,
   );
 
   function changeQuantity(change) {
@@ -88,13 +106,15 @@ function createCartItem(item, product) {
 
     try {
       // Read the current quantity from storage before updating.
-      const currentItem = getCart().find((cartItem) => cartItem.id === item.id);
+      const currentItem = getCart().find((cartItem) => {
+        return cartItem.id === item.id && (cartItem.size ?? null) === itemSize;
+      });
 
       if (!currentItem) {
         throw new Error("This jacket is no longer in your cart.");
       }
 
-      updateCartQuantity(item.id, currentItem.quantity + change);
+      updateCartQuantity(item.id, currentItem.quantity + change, itemSize);
       renderCart();
 
       const updatedButton = Array.from(
@@ -154,13 +174,13 @@ function createCartItem(item, product) {
   removeButton.type = "button";
   removeButton.classList.add("remove-from-cart");
   removeButton.textContent = "Remove";
-  removeButton.setAttribute("aria-label", `Remove ${title.textContent}`);
+  removeButton.setAttribute("aria-label", `Remove ${itemLabel}`);
 
   removeButton.addEventListener("click", () => {
     errorMessage.hidden = true;
 
     try {
-      removeFromCart(item.id);
+      removeFromCart(item.id, itemSize);
       renderCart();
       cartTitle.focus();
     } catch (error) {
@@ -170,7 +190,7 @@ function createCartItem(item, product) {
     }
   });
 
-  details.append(title, quantity, price, removeButton);
+  details.append(title, size, quantity, price, removeButton);
   article.append(details);
 
   return article;
@@ -178,6 +198,15 @@ function createCartItem(item, product) {
 
 function renderCart() {
   const cart = getCart();
+
+  const hasInvalidSizes = cart.some((item) => {
+    const product = products.find((product) => product.id === item.id);
+
+    return (
+      product &&
+      (!Array.isArray(product.sizes) || !product.sizes.includes(item.size))
+    );
+  });
 
   const totalQuantity = cart.reduce((total, item) => {
     return total + item.quantity;
@@ -211,7 +240,8 @@ function renderCart() {
   cartTotal.textContent = hasUnavailableItems
     ? "Remove unavailable items to see your total."
     : priceFormatter.format(totalInOre / 100);
-  checkoutLink.hidden = cart.length === 0 || hasUnavailableItems;
+  checkoutLink.hidden =
+    cart.length === 0 || hasUnavailableItems || hasInvalidSizes;
 }
 
 async function loadCart() {

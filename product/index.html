@@ -117,14 +117,75 @@
             </div>
 
             <p id="product-description" class="product-description"></p>
+            <fieldset
+              id="product-size-fieldset"
+              class="product-size-fieldset"
+              hidden
+            >
+              <legend>Choose your size</legend>
+
+              <div id="product-sizes" class="product-sizes"></div>
+            </fieldset>
             <button id="add-to-cart" class="cta-button" type="button" disabled>
               Add to Cart
             </button>
 
             <p id="cart-message" class="sr-only" role="status"></p>
             <p id="cart-error" role="alert" hidden></p>
+
+            <div class="product-service-info">
+              <div class="product-service-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M3 5h11v12H3zM14 9h4l3 4v4h-7" />
+                  <circle cx="7" cy="18" r="2" />
+                  <circle cx="18" cy="18" r="2" />
+                </svg>
+
+                <div>
+                  <p class="product-service-title">
+                    Delivery within 3-5 business days
+                  </p>
+                  <p>Norway &amp; Scandinavia</p>
+                  <p>Free standard shipping on orders over 1500kr</p>
+                </div>
+              </div>
+
+              <div class="product-service-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="m9 4-5 5 5 5M4 9h10a6 6 0 0 1 0 12" />
+                </svg>
+
+                <div>
+                  <p class="product-service-title">Easy 30-day return policy</p>
+                  <p>Free return shipping on exchanges</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
+
+      <section
+        id="related-products"
+        class="recommendations"
+        aria-labelledby="related-products-title"
+        hidden
+      >
+        <h2 id="related-products-title">You may also like</h2>
+
+        <div id="related-products-list" class="recommendations-grid"></div>
       </section>
     </main>
 

@@ -31,6 +31,9 @@ export function getCart() {
       typeof item === "object" &&
       typeof item.id === "string" &&
       item.id.trim() !== "" &&
+      (item.size === undefined ||
+        item.size === null ||
+        (typeof item.size === "string" && item.size.trim() !== "")) &&
       Number.isSafeInteger(item.quantity) &&
       item.quantity > 0
     );
@@ -45,17 +48,22 @@ export function getCart() {
   return cart;
 }
 
-export function addToCart(productId) {
+export function addToCart(productId, size = null) {
   if (typeof productId !== "string" || !productId.trim()) {
     throw new Error(
       "Please select a valid jacket before adding it to your cart.",
     );
   }
 
+  if (size !== null && (typeof size !== "string" || !size.trim())) {
+    throw new Error("Please select a valid size");
+  }
+
+  const selectedSize = size === null ? null : size.trim();
   const cart = getCart();
 
   const existingItem = cart.find((item) => {
-    return item.id === productId;
+    return item.id === productId && (item.size ?? null) === selectedSize;
   });
 
   if (existingItem) {
@@ -67,6 +75,7 @@ export function addToCart(productId) {
   } else {
     cart.push({
       id: productId,
+      size: selectedSize,
       quantity: 1,
     });
   }
@@ -76,11 +85,13 @@ export function addToCart(productId) {
   window.dispatchEvent(new Event("cart-updated"));
 }
 
-export function removeFromCart(productId) {
+export function removeFromCart(productId, size = null) {
   const cart = getCart();
 
   const updatedCart = cart.filter((item) => {
-    return item.id !== productId;
+    const matchesItem = item.id === productId && (item.size ?? null) === size;
+
+    return !matchesItem;
   });
 
   localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
@@ -93,13 +104,15 @@ export function clearCart() {
   window.dispatchEvent(new Event("cart-updated"));
 }
 
-export function updateCartQuantity(productId, quantity) {
+export function updateCartQuantity(productId, quantity, size = null) {
   if (!Number.isSafeInteger(quantity) || quantity < 1) {
     throw new Error("Quantity must be a positive whole number");
   }
 
   const cart = getCart();
-  const item = cart.find((item) => item.id === productId);
+  const item = cart.find((item) => {
+    return item.id === productId && (item.size ?? null) === size;
+  });
 
   if (!item) {
     throw new Error("This jacket is no longer in your cart");
