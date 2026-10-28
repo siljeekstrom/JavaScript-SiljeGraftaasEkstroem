@@ -7,7 +7,6 @@ const loadingMessage = document.querySelector("#product-loading");
 const errorMessage = document.querySelector("#product-error");
 const productContent = document.querySelector("#product-content");
 const productTitle = document.querySelector("#product-title");
-const productImage = document.querySelector("#product-image");
 const productPrice = document.querySelector("#product-price");
 const productDescription = document.querySelector("#product-description");
 const productBreadcrumb = document.querySelector("#product-breadcrumb");
@@ -23,6 +22,9 @@ const relatedProductsLoading = document.querySelector(
 );
 const relatedProductsError = document.querySelector("#related-products-error");
 const relatedProductsEmpty = document.querySelector("#related-products-empty");
+const productImage = document.createElement("img");
+productImage.id = "product-image";
+productImage.classList.add("product-main-img");
 
 let currentProduct = null;
 
@@ -35,6 +37,7 @@ function renderProduct(product) {
 
   productImage.src = product.image.url;
   productImage.alt = product.image.alt || product.title;
+  document.querySelector(".product-main-image").replaceChildren(productImage);
 
   document.title = `${displayTitle} | Rainy Days`;
 
