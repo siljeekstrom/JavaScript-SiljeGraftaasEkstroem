@@ -16,9 +16,9 @@ ChatGPT was used for explanations, debugging and testing guidance.
 
 - Used ChatGPT to draft text for the Terms and Conditions and Privacy Policy pages.
 
-## Other assistancec during October 2026
+## Other assistance during October 2026
 
-The following entries summarise additional assistance.
+The following entries summarize additional assistance.
 Individual dates were not recorded for every interaction.
 
 ### Planning and explanation
@@ -30,7 +30,7 @@ Individual dates were not recorded for every interaction.
 ### Debugging
 
 - Identified spelling errors, incorrect selectors and mismatched IDs.
-  -Helped locate missing brackets and incorrect HTML nesting.
+- Helped locate missing brackets and incorrect HTML nesting.
 - Explained errors caused by unavailable DOM elements and variable scope.
 - Suggested corrections to network error handling.
 
@@ -38,7 +38,7 @@ Individual dates were not recorded for every interaction.
 
 - Drafted text for Terms and Conditions and Privacy Policy, as recorded in the dated entry.
 - Suggested README content and commit messages.
-- Helped organise this AI usage log.
+- Helped organize this AI usage log.
 
 ### Testing guidance
 
