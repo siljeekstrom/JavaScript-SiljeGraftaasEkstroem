@@ -254,7 +254,8 @@ button {
   color: var(--color-text);
 }
 
-.button-icon:hover {
+.button-icon:hover,
+.header-search-control:hover {
   background-color: var(--color-white);
 }
 
@@ -1157,7 +1158,7 @@ footer p {
 }
 
 .recommendation-link:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 3px solid var(--color-accent);
   outline-offset: 4px;
 }
 
@@ -2458,7 +2459,7 @@ button.add-to-cart:disabled {
 }
 
 button.add-to-cart:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 3px solid var(--color-accent);
   outline-offset: 4px;
 }
 
@@ -2537,7 +2538,7 @@ button.add-to-cart:focus-visible {
 
 #product-list .product-add-button:focus-visible,
 #product-list .product-link:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 3px solid var(--color-accent);
   outline-offset: 4px;
 }
 
@@ -2657,7 +2658,7 @@ button.add-to-cart:focus-visible {
 }
 
 .home .category-card:focus-visible {
-  outline: 3px solid var(--color-text);
+  outline: 3px solid var(--color-accent);
   outline-offset: 4px;
 }
 
@@ -2708,7 +2709,7 @@ button.add-to-cart:focus-visible {
 }
 
 .header-search-control:focus-within {
-  outline: 2px solid var(--color-text);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
@@ -3371,7 +3372,7 @@ button.add-to-cart:focus-visible {
   color: var(--color-text);
 }
 
-.page-checkout #checkout-fields input:focs-visible {
+.page-checkout #checkout-fields input:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
@@ -3475,6 +3476,6 @@ button.add-to-cart:focus-visible {
 }
 
 .product-size-option input:focus-visible + span {
-  outline: 3px solid var(--color-text);
+  outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
