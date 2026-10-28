@@ -1,7 +1,15 @@
 const API_URL = "https://v2.api.noroff.dev/rainy-days";
 
 export async function getProducts() {
-  const response = await fetch(API_URL);
+  let response;
+
+  try {
+    response = await fetch(API_URL);
+  } catch {
+    throw new Error(
+      "Could not load jackets. Please check your connection and try again.",
+    );
+  }
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
@@ -17,7 +25,15 @@ export async function getProducts() {
 }
 
 export async function getProduct(id) {
-  const response = await fetch(`${API_URL}/${encodeURIComponent(id)}`);
+  let response;
+
+  try {
+    response = await fetch(`${API_URL}/${encodeURIComponent(id)}`);
+  } catch {
+    throw new Error(
+      "Could not load this jacket. Please check your connection and try again.",
+    );
+  }
 
   if (!response.ok) {
     if (response.status === 404) {

@@ -128,7 +128,8 @@ function renderCart() {
   cartTotal.textContent = hasUnavailableItems
     ? "Remove unavailable items to see your total."
     : priceFormatter.format(totalInOre / 100);
-  checkoutForm.hidden = cart.length === 0 || hasUnavailableItems;
+  checkoutForm.hidden =
+    cart.length === 0 || hasUnavailableItems || hasInvalidSizes;
 }
 
 async function loadCart() {
@@ -151,15 +152,14 @@ async function loadCart() {
     cartItems.replaceChildren();
     emptyMessage.hidden = true;
     cartSummary.hidden = true;
-    checkoutForm.hidden =
-      cart.length === 0 || hasUnavailableItems || hasInvalidSizes;
+    checkoutForm.hidden = true;
 
     if (error instanceof InvalidCartError) {
       errorMessage.textContent = error.message;
       resetCartButton.hidden = false;
     } else {
       errorMessage.textContent =
-        "We could not load you cart. Please refresh the page and try again.";
+        "We could not load your cart. Please refresh the page and try again.";
     }
 
     errorMessage.hidden = false;
