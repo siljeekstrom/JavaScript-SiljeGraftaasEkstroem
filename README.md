@@ -111,4 +111,4 @@ Delivery and return information is illustrative.
 ## Credits
 
 - Product information and images: Noroff Rainy Days API
-- Ai assistance is documented in AI_LOG.md and the project reflection.
+- AI assistance is documented in AI_LOG.md and the project reflection.
