@@ -3222,6 +3222,16 @@ button.add-to-cart:focus-visible {
   line-height: 1.5;
 }
 
+.page-cart .cart-item-image a {
+  display: block;
+  border-radius: var(--radius-s);
+}
+
+.page-cart .cart-item-image a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 /* The last product already has a dividing line */
 .page-cart .cart-summary-row.total {
   margin-top: 0;

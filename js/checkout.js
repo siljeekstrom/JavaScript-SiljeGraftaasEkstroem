@@ -60,15 +60,11 @@ function createCartItem(item, product) {
     const imageContainer = document.createElement("div");
     imageContainer.classList.add("cart-item-image");
 
-    const link = document.createElement("a");
-    link.href = `../product/index.html?id=${encodeURIComponent(product.id)}`;
-
     const image = document.createElement("img");
     image.src = product.image.url;
     image.alt = product.image.alt || product.title;
 
-    link.append(image);
-    imageContainer.append(link);
+    imageContainer.append(image);
     article.append(imageContainer);
 
     title.textContent = product.title.replace(/^Rainy Days\s+/i, "");
