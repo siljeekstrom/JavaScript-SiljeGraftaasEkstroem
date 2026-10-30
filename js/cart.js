@@ -1,5 +1,6 @@
 const CART_KEY = "rainyDaysCart";
 
+// Let the UI distinguish invalid saved cart data from other errors.
 export class InvalidCartError extends Error {}
 
 export function getCart() {
@@ -25,12 +26,14 @@ export function getCart() {
     );
   }
 
+  // Validate stored items before allowing cart operations.
   const validItems = cart.every((item) => {
     return (
       item !== null &&
       typeof item === "object" &&
       typeof item.id === "string" &&
       item.id.trim() !== "" &&
+      // Allow older cart items without a size; size availability is checked before checkout.
       (item.size === undefined ||
         item.size === null ||
         (typeof item.size === "string" && item.size.trim() !== "")) &&
@@ -62,6 +65,7 @@ export function addToCart(productId, size = null) {
   const selectedSize = size === null ? null : size.trim();
   const cart = getCart();
 
+  // Combine quantities only when both the product and selected size match.
   const existingItem = cart.find((item) => {
     return item.id === productId && (item.size ?? null) === selectedSize;
   });
@@ -82,6 +86,7 @@ export function addToCart(productId, size = null) {
 
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 
+  // Notify the current page after saving so the cart badge can update.
   window.dispatchEvent(new Event("cart-updated"));
 }
 

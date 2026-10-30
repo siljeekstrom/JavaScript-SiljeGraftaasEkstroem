@@ -5,16 +5,18 @@ const details = document.querySelector("#order-details");
 
 function showConfirmation() {
   try {
-    const storeOrder = sessionStorage.getItem("rainyDaysOrder");
+    const storedOrder = sessionStorage.getItem("rainyDaysOrder");
 
-    if (!storeOrder) {
+    // Handle visits to this page without a saved demo order.
+    if (!storedOrder) {
       message.textContent =
         "No completed order was found. Please return to the shop.";
       return;
     }
 
-    const order = JSON.parse(storeOrder);
+    const order = JSON.parse(storedOrder);
 
+    // Validate the saved receipt before displaying its details.
     if (
       !order ||
       typeof order.id !== "string" ||
@@ -38,7 +40,7 @@ function showConfirmation() {
     message.textContent = "Your demo order is complete.";
     details.hidden = false;
   } catch (error) {
-    message.textContent = "We could not display you order confirmation.";
+    message.textContent = "We could not display your order confirmation.";
   }
 }
 

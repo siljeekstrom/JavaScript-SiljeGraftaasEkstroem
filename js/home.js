@@ -22,6 +22,7 @@ function createProductCard(product) {
   const link = document.createElement("a");
   link.classList.add("product-link");
 
+  // Resolve product links relative to this module so they work from home and category pages.
   const productUrl = new URL("../product/index.html", import.meta.url);
   productUrl.searchParams.set("id", product.id);
   link.href = productUrl.href;
@@ -79,6 +80,7 @@ function renderProducts(products) {
 }
 
 function applyFilters() {
+  // Use the fixed gender on category pages and the selected filter on the homepage.
   const selectedGender =
     categoryGender === "all" ? (genderFilter?.value ?? "all") : categoryGender;
 
@@ -89,6 +91,7 @@ function applyFilters() {
   renderProducts(filteredProducts);
 }
 
+// Category pages share this script but may not contain a filter control
 if (genderFilter) {
   genderFilter.addEventListener("change", applyFilters);
 }
@@ -115,9 +118,10 @@ async function loadProducts() {
     applyFilters();
 
     if (genderFilter) {
+      // Enable filtering after loading only when the page is not restricted to one gender.
       genderFilter.disabled = categoryGender !== "all";
     }
-  } catch (error) {
+  } catch {
     productList.replaceChildren();
     productsCount.textContent = "";
 

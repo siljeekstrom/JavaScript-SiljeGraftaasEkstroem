@@ -8,24 +8,28 @@ const dropdown = document.querySelector("#search-dropdown");
 const suggestions = document.querySelector("#search-suggestions");
 const status = document.querySelector("#search-status");
 
+// Only initialise search on pages that contain all required search elements.
 if (searchForm && searchInput && dropdown && suggestions && status) {
   let productRequest = null;
   let searchVersion = 0;
 
   async function getSearchProducts() {
     try {
+      // Reuse the product request so typing does not trigger repeated API calls.
       if (!productRequest) {
         productRequest = getProducts();
       }
 
       return await productRequest;
     } catch (error) {
+      // Allow a new request on the next search if loading fails.
       productRequest = null;
       throw error;
     }
   }
 
   function closeSuggestions() {
+    // Invalidate pending searches so they cannot reopen the closed dropdown.
     searchVersion += 1;
     dropdown.hidden = true;
   }
@@ -48,6 +52,7 @@ if (searchForm && searchInput && dropdown && suggestions && status) {
     try {
       const products = await getSearchProducts();
 
+      // Ignore results if the user has changed the search or closed the dropdown.
       if (currentVersion !== searchVersion) {
         return;
       }
@@ -150,6 +155,7 @@ if (searchForm && searchInput && dropdown && suggestions && status) {
 
     const isMobile = window.matchMedia("(max-width: 860px)").matches;
 
+    // On smaller screens, the first submit opens the search field.
     if (isMobile && !searchForm.classList.contains("is-open")) {
       searchForm.classList.add("is-open");
       searchInput.focus();

@@ -3,6 +3,7 @@ const API_URL = "https://v2.api.noroff.dev/rainy-days";
 export async function getProducts() {
   let response;
 
+  // Handle connection failures separately from HTTP error responses.
   try {
     response = await fetch(API_URL);
   } catch {
@@ -17,6 +18,7 @@ export async function getProducts() {
 
   const result = await response.json();
 
+  // Validate the response structure before returning the product list.
   if (!Array.isArray(result.data)) {
     throw new Error("Unexpected product data");
   }
@@ -36,6 +38,7 @@ export async function getProduct(id) {
   }
 
   if (!response.ok) {
+    // Give a specific message when the requested jacket cannot be found.
     if (response.status === 404) {
       throw new Error(
         "This jacket could not be found. Please check the URL and try again.",

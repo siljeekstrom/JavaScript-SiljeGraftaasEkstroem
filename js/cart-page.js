@@ -107,6 +107,7 @@ function createCartItem(item, product) {
     try {
       // Read the current quantity from storage before updating.
       const currentItem = getCart().find((cartItem) => {
+        // Match both product and size so each size is updated separately.
         return cartItem.id === item.id && (cartItem.size ?? null) === itemSize;
       });
 
@@ -117,6 +118,7 @@ function createCartItem(item, product) {
       updateCartQuantity(item.id, currentItem.quantity + change, itemSize);
       renderCart();
 
+      // Rendering replaces the buttons, so find the new button to restore keyboard focus.
       const updatedButton = Array.from(
         cartItems.querySelectorAll(".cart-quantity button"),
       ).find((button) => {
@@ -158,6 +160,7 @@ function createCartItem(item, product) {
 
   if (product) {
     const unitPrice = getUnitPrice(product);
+    // Calculate in whole øre to avoid floating-point rounding errors.
     const lineTotal = Math.round(unitPrice * 100) * item.quantity;
 
     const totalPrice = document.createElement("span");
@@ -240,6 +243,7 @@ function renderCart() {
   cartTotal.textContent = hasUnavailableItems
     ? "Remove unavailable items to see your total."
     : priceFormatter.format(totalInOre / 100);
+  // Prevent checkout when the cart is empty or contains unavailable products or sizes.
   checkoutLink.hidden =
     cart.length === 0 || hasUnavailableItems || hasInvalidSizes;
 }
@@ -266,12 +270,13 @@ async function loadCart() {
     cartSummary.hidden = true;
     checkoutLink.hidden = true;
 
+    // Offer a reset when saved cart data is invalid.
     if (error instanceof InvalidCartError) {
       errorMessage.textContent = error.message;
       resetCartButton.hidden = false;
     } else {
       errorMessage.textContent =
-        "We could not load you cart. Please refresh the page and try again.";
+        "We could not load your cart. Please refresh the page and try again.";
     }
 
     errorMessage.hidden = false;

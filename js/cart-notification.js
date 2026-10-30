@@ -5,12 +5,14 @@ let returnFocusElement;
 let dismissTimer;
 
 function scheduleDismiss() {
+  // Cancel the previous timer so it cannot dismiss a newly shown notification.
   clearTimeout(dismissTimer);
 
   dismissTimer = setTimeout(() => {
-    const isHovered = notification.matches("hover");
+    const isHovered = notification.matches(":hover");
     const hasFocus = notification.contains(document.activeElement);
 
+    // Keep the notification visible while the user is interacting with it.
     if (!isHovered && !hasFocus) {
       notification.hidden = true;
     }
@@ -18,6 +20,7 @@ function scheduleDismiss() {
 }
 
 export function showCartNotification(product) {
+  // Create the notification and its event listeners once, then reuse it.
   if (!notification) {
     notification = document.createElement("aside");
     notification.classList.add("cart-notification");
@@ -44,6 +47,8 @@ export function showCartNotification(product) {
   function closeNotification() {
     clearTimeout(dismissTimer);
     notification.hidden = true;
+
+    // Return keyboard focus to the previous element when manually closing.
     returnFocusElement?.focus({ preventScroll: true });
   }
 

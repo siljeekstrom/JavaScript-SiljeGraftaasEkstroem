@@ -167,6 +167,7 @@ async function loadCart() {
 checkoutForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  // Prevent repeated submissions while an order is being processed.
   if (isProcessingOrder) {
     return;
   }
@@ -175,10 +176,6 @@ checkoutForm.addEventListener("submit", async (event) => {
   checkoutFields.disabled = true;
   orderLoading.hidden = false;
   errorMessage.hidden = true;
-
-  cartItems.querySelectorAll("button").forEach((button) => {
-    button.disabled = true;
-  });
 
   let receiptSaved = false;
 
@@ -189,6 +186,7 @@ checkoutForm.addEventListener("submit", async (event) => {
       throw new Error("Your cart is empty. Please add a jacket first.");
     }
 
+    // Fetch fresh product data to recheck availability, sizes and prices before ordering.
     const updatedProducts = await getProducts();
 
     const hasUnavailableItems = cart.some((item) => {
@@ -243,6 +241,7 @@ checkoutForm.addEventListener("submit", async (event) => {
       );
     }
 
+    // Show updated prices and require the user to review them before trying again.
     if (pricesChanged) {
       renderCart();
 
@@ -261,10 +260,11 @@ checkoutForm.addEventListener("submit", async (event) => {
 
       if (!product) {
         throw new Error(
-          "A jacket is no longer available. Refresh the page and remove it befor ordering.",
+          "A jacket is no longer available. Refresh the page and remove it before ordering.",
         );
       }
 
+      // Calculate the order total in whole øre to avoid floating-point rounding errors.
       const unitPriceInOre = Math.round(getUnitPrice(product) * 100);
 
       totalInOre += unitPriceInOre * item.quantity;
@@ -278,6 +278,7 @@ checkoutForm.addEventListener("submit", async (event) => {
       totalInOre,
     };
 
+    // Save the demo receipt before clearing the cart so the confirmation page can display it.
     sessionStorage.setItem("rainyDaysOrder", JSON.stringify(order));
     receiptSaved = true;
 
@@ -285,6 +286,7 @@ checkoutForm.addEventListener("submit", async (event) => {
 
     window.location.href = "confirmation/index.html";
   } catch (error) {
+    // Remove the saved receipt if checkout fails after it was stored.
     if (receiptSaved) {
       try {
         sessionStorage.removeItem("rainyDaysOrder");
@@ -303,10 +305,6 @@ checkoutForm.addEventListener("submit", async (event) => {
     isProcessingOrder = false;
     checkoutFields.disabled = false;
     orderLoading.hidden = true;
-
-    cartItems.querySelectorAll("button").forEach((button) => {
-      button.disabled = false;
-    });
   }
 });
 

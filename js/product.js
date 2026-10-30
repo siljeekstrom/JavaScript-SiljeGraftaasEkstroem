@@ -22,6 +22,7 @@ const relatedProductsLoading = document.querySelector(
 );
 const relatedProductsError = document.querySelector("#related-products-error");
 const relatedProductsEmpty = document.querySelector("#related-products-empty");
+// Create the image dynamically so the HTML does not contain an image without a source.
 const productImage = document.createElement("img");
 productImage.id = "product-image";
 productImage.classList.add("product-main-img");
@@ -56,6 +57,32 @@ function renderProduct(product) {
     productPrice.textContent = priceFormatter.format(product.price);
   }
 }
+function renderSizes(product) {
+  productSizes.replaceChildren();
+
+  // Build size options from API data rather than hardcoding available sizes.
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+
+  sizeFieldset.hidden = sizes.length === 0;
+
+  sizes.forEach((size, index) => {
+    const label = document.createElement("label");
+    label.classList.add("product-size-option");
+
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "product-size";
+    input.value = size;
+    input.id = `product-size-${index}`;
+
+    const text = document.createElement("span");
+    text.textContent = size;
+
+    label.htmlFor = input.id;
+    label.append(input, text);
+    productSizes.append(label);
+  });
+}
 
 async function loadProduct() {
   loadingMessage.hidden = false;
@@ -74,38 +101,13 @@ async function loadProduct() {
 
     const product = await getProduct(productId);
 
-    function renderSizes(product) {
-      productSizes.replaceChildren();
-
-      const sizes = Array.isArray(product.sizes) ? product.sizes : [];
-
-      sizeFieldset.hidden = sizes.length === 0;
-
-      sizes.forEach((size, index) => {
-        const label = document.createElement("label");
-        label.classList.add("product-size-option");
-
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "product-size";
-        input.value = size;
-        input.id = `product-size-${index}`;
-
-        const text = document.createElement("span");
-        text.textContent = size;
-
-        label.htmlFor = input.id;
-        label.append(input, text);
-        productSizes.append(label);
-      });
-    }
-
     renderProduct(product);
     renderSizes(product);
 
     currentProduct = product;
     addToCartButton.disabled = false;
     productContent.hidden = false;
+    // Load recommendations independently so the main product is usable while they load.
     loadRelatedProducts(product);
   } catch (error) {
     errorMessage.textContent =
@@ -132,6 +134,7 @@ addToCartButton.addEventListener("click", () => {
       `input[name="product-size"]:checked`,
     );
 
+    // Require a size and move keyboard focus to the options if none is selected.
     if (!selectedSize) {
       cartError.textContent = "Please choose a size before adding this jacket.";
       cartError.hidden = false;
@@ -155,8 +158,8 @@ addToCartButton.addEventListener("click", () => {
 });
 
 async function loadRelatedProducts(currentProduct) {
-  relatedProductsSection.hidden = false;
   relatedProductsLoading.hidden = false;
+  relatedProductsSection.hidden = false;
   relatedProductsError.hidden = true;
   relatedProductsEmpty.hidden = true;
   relatedProductsList.replaceChildren();
@@ -165,6 +168,7 @@ async function loadRelatedProducts(currentProduct) {
   try {
     const products = await getProducts();
 
+    // Show up to three other jackets of the same gender, excluding the current product.
     const relatedProducts = products
       .filter((product) => {
         return (
@@ -218,8 +222,6 @@ async function loadRelatedProducts(currentProduct) {
       article.append(link);
       relatedProductsList.append(article);
     });
-
-    relatedProductsSection.hidden = false;
   } catch {
     relatedProductsList.replaceChildren();
 
