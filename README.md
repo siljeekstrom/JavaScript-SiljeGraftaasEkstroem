@@ -8,8 +8,8 @@ Rainy Days is a student e-commerce project built with HTML, CSS ans vanilla Java
 
 ## Links
 
-- Live website:
-- Repository:
+- Live website: https://siljeekstrom.github.io/JavaScript-SiljeGraftaasEkstroem/
+- Repository: https://github.com/siljeekstrom/JavaScript-SiljeGraftaasEkstroem
 
 ## Features
 
