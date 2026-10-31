@@ -16,6 +16,10 @@ ChatGPT was used for explanations, debugging and testing guidance.
 
 - Used ChatGPT to draft text for the Terms and Conditions and Privacy Policy pages.
 
+### 31 October
+
+- Used ChatGPT to review the CSS against the HTML ans JavaScript files, identify unused styles, suggest headings and group media queries. I applied the changes and tested the layouts and keyboard navigation afterwards.
+
 ## Other assistance during October 2026
 
 The following entries summarize additional assistance.
