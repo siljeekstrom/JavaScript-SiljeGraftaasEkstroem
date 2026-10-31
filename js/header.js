@@ -144,7 +144,10 @@ if (searchForm && searchInput && dropdown && suggestions && status) {
   });
 
   searchForm.addEventListener("focusout", (event) => {
-    if (!searchForm.contains(event.relatedTarget)) {
+    if (
+      event.relatedTarget !== null &&
+      !searchForm.contains(event.relatedTarget)
+    ) {
       closeSuggestions();
       searchForm.classList.remove("is-open");
     }
